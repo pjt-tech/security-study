@@ -5,12 +5,12 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.Data;
-import org.hibernate.annotations.CreationTimestamp;
+import lombok.NoArgsConstructor;
+import java.time.LocalDateTime;
 
-import java.sql.Timestamp;
-
-@Entity
 @Data
+@NoArgsConstructor
+@Entity
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,7 +24,5 @@ public class User {
 
     private String role;
 
-    @CreationTimestamp
-    private Timestamp createDate;
-
+    private LocalDateTime createDate;
 }

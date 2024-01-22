@@ -4,6 +4,7 @@ import com.mac.test.entity.User;
 import com.mac.test.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -78,5 +79,12 @@ public class SecurityController {
     @GetMapping("/joinProc")
     public @ResponseBody String joinProc() {
         return "회원가입 완료됨";
+    }
+
+    @Secured("ROLE_ADMIN")
+    @GetMapping("/info")
+    public @ResponseBody String info() {
+
+        return "info";
     }
 }

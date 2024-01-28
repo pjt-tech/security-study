@@ -1,11 +1,16 @@
 package com.mac.test.controller;
 
+import com.mac.test.config.auth.PrincipalDetails;
 import com.mac.test.entity.User;
 import com.mac.test.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -32,7 +37,9 @@ public class SecurityController {
 
 
     @GetMapping("/user")
-    public @ResponseBody String user() {
+    public @ResponseBody String user(@AuthenticationPrincipal PrincipalDetails principalDetails) {
+
+        System.out.println(principalDetails.getUser());
         return "user";
     }
 
@@ -86,5 +93,31 @@ public class SecurityController {
     public @ResponseBody String info() {
 
         return "info";
+    }
+
+    @GetMapping("/test/login")
+    public @ResponseBody String testLogin(Authentication authentication,
+                                          @AuthenticationPrincipal PrincipalDetails userDetails) {
+
+        PrincipalDetails principal = (PrincipalDetails) authentication.getPrincipal();
+        System.out.println("authentication.getPrincipal() = " + principal.getUser());
+
+        System.out.println(userDetails.getUser());
+
+        return "세션정보확인!!";
+
+    }
+
+    @GetMapping("/test/oauth/login")
+    public @ResponseBody String testOauthLogin(Authentication authentication,
+                                               @AuthenticationPrincipal OAuth2User oAuth) {
+
+        OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
+        System.out.println("oAuth2User.getAttributes() = " + oAuth2User.getAttributes());
+
+        System.out.println("oAuth.getAttributes() = " + oAuth.getAttributes());
+
+        return "세션정보확인!!";
+
     }
 }
